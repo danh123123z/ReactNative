@@ -7,6 +7,7 @@ const Bai04_1 = require("./Bai04");
 const Bai05_1 = require("./Bai05");
 const Bai06_1 = require("./Bai06");
 const Bai07_1 = require("./Bai07");
+const Bai08_1 = require("./Bai08");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -32,3 +33,10 @@ const user = new Bai07_1.User("Danh");
 console.log(user.getName());
 user.setName("Dao Duc Danh");
 console.log(user.getName());
+// 8. Create a Product class with name, price. Create an array of products and filter products with
+// price > 100.
+const products = [new Bai08_1.Product("Iphon112", 50), new Bai08_1.Product("Iphone12", 110), new Bai08_1.Product("Iphone13", 150)];
+const filterProducts = products.filter(item => item.price > 100);
+filterProducts.forEach(product => {
+    product.display();
+});

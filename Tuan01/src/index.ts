@@ -5,6 +5,7 @@ import { Rectangle } from "./Bai04";
 import { BankAccount } from "./Bai05";
 import { Book } from "./Bai06";
 import { User } from "./Bai07";
+import { Product } from "./Bai08";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -38,3 +39,12 @@ const user = new User("Danh");
 console.log(user.getName());
 user.setName("Dao Duc Danh");
 console.log(user.getName())
+
+// 8. Create a Product class with name, price. Create an array of products and filter products with
+// price > 100.
+
+const products = [new Product("Iphon112", 50), new Product("Iphone12", 110), new Product("Iphone13", 150)]
+const filterProducts = products.filter(item => item.price > 100);
+filterProducts.forEach(product => {
+    product.display()
+})
