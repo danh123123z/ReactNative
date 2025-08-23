@@ -4,6 +4,7 @@ import { Car } from "./Bai03";
 import { Rectangle } from "./Bai04";
 import { BankAccount } from "./Bai05";
 import { Book } from "./Bai06";
+import { User } from "./Bai07";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -31,3 +32,9 @@ bank.withdraw(20000)
 // 6. Create a class Book with attributes title, author, year.
 const book = new Book("Lap trinh C", "Danh", 2022);
 book.display();
+
+// 7. Write a class User with private property name and getter/setter.
+const user = new User("Danh");
+console.log(user.getName());
+user.setName("Dao Duc Danh");
+console.log(user.getName())

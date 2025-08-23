@@ -6,6 +6,7 @@ const Bai03_1 = require("./Bai03");
 const Bai04_1 = require("./Bai04");
 const Bai05_1 = require("./Bai05");
 const Bai06_1 = require("./Bai06");
+const Bai07_1 = require("./Bai07");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -26,3 +27,8 @@ bank.withdraw(20000);
 // 6. Create a class Book with attributes title, author, year.
 const book = new Bai06_1.Book("Lap trinh C", "Danh", 2022);
 book.display();
+// 7. Write a class User with private property name and getter/setter.
+const user = new Bai07_1.User("Danh");
+console.log(user.getName());
+user.setName("Dao Duc Danh");
+console.log(user.getName());
