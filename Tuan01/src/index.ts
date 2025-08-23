@@ -3,6 +3,7 @@ import { Student } from "./Bai02";
 import { Car } from "./Bai03";
 import { Rectangle } from "./Bai04";
 import { BankAccount } from "./Bai05";
+import { Book } from "./Bai06";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -26,3 +27,7 @@ console.log(`Area: ${rectangle.calculateArea()}, Perimeter: ${rectangle.calculat
 const bank = new BankAccount(100000);
 bank.deposit(50000)
 bank.withdraw(20000)
+
+// 6. Create a class Book with attributes title, author, year.
+const book = new Book("Lap trinh C", "Danh", 2022);
+book.display();

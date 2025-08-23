@@ -5,6 +5,7 @@ const Bai02_1 = require("./Bai02");
 const Bai03_1 = require("./Bai03");
 const Bai04_1 = require("./Bai04");
 const Bai05_1 = require("./Bai05");
+const Bai06_1 = require("./Bai06");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -22,3 +23,6 @@ console.log(`Area: ${rectangle.calculateArea()}, Perimeter: ${rectangle.calculat
 const bank = new Bai05_1.BankAccount(100000);
 bank.deposit(50000);
 bank.withdraw(20000);
+// 6. Create a class Book with attributes title, author, year.
+const book = new Bai06_1.Book("Lap trinh C", "Danh", 2022);
+book.display();
