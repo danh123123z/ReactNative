@@ -13,6 +13,7 @@ const Bai12_1 = require("./Bai12");
 const Bai13_1 = require("./Bai13");
 const Bai14_1 = require("./Bai14");
 const Bai16_1 = require("./Bai16");
+const Bai18_1 = require("./Bai18");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -77,3 +78,8 @@ const stringBox = new Bai16_1.Box("Hello");
 console.log("String:", stringBox.getValue());
 const booleanBox = new Bai16_1.Box(true);
 console.log("Boolean:", booleanBox.getValue());
+// 18. Create a static class MathUtil with methods add(), subtract(), multiply(), divide().
+console.log(Bai18_1.MathUtil.add(10, 5));
+console.log(Bai18_1.MathUtil.subtract(10, 5));
+console.log(Bai18_1.MathUtil.multiply(10, 5));
+console.log(Bai18_1.MathUtil.divide(10, 5));

@@ -11,6 +11,7 @@ import { Bird, Fish } from "./Bai12";
 import { Circle, Square } from "./Bai13";
 import { Developer, Manager } from "./Bai14";
 import { Box } from "./Bai16";
+import { MathUtil } from "./Bai18";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -19,7 +20,7 @@ person.display()
 // 2. Write a class Student extending Person with an additional attribute grade. Add a method to
 // display all info.
 
-const student =  new Student("Dao Duc Danh", 18, 10);
+const student = new Student("Dao Duc Danh", 18, 10);
 student.display()
 
 // 3. Create a class Car with properties brand, model, year. Write a method to show car info.
@@ -65,8 +66,8 @@ cat.meow();
 // 12. Define interfaces Flyable and Swimmable. Implement them in Bird and Fish classes.
 const bird = new Bird();
 const fish = new Fish();
-fish.swim(); 
-bird.fly(); 
+fish.swim();
+bird.fly();
 
 // 13. Create an abstract class Shape with method area(). Implement Square and Circle.
 
@@ -93,4 +94,10 @@ console.log("Number:", numberBox.getValue());
 const stringBox = new Box<string>("Hello");
 console.log("String:", stringBox.getValue());
 const booleanBox = new Box<boolean>(true);
-console.log("Boolean:", booleanBox.getValue()); 
+console.log("Boolean:", booleanBox.getValue());
+
+// 18. Create a static class MathUtil with methods add(), subtract(), multiply(), divide().
+console.log(MathUtil.add(10, 5));
+console.log(MathUtil.subtract(10, 5));
+console.log(MathUtil.multiply(10, 5));
+console.log(MathUtil.divide(10, 5)); 
