@@ -8,6 +8,7 @@ const Bai05_1 = require("./Bai05");
 const Bai06_1 = require("./Bai06");
 const Bai07_1 = require("./Bai07");
 const Bai08_1 = require("./Bai08");
+const Bai11_1 = require("./Bai11");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -40,3 +41,9 @@ const filterProducts = products.filter(item => item.price > 100);
 filterProducts.forEach(product => {
     product.display();
 });
+// 9. Define an interface Animal with name and method sound().
+// 11. Create a base class Animal. Extend Dog and Cat classes with methods bark() and meow().
+const dog = new Bai11_1.Dog("Chuppy1");
+const cat = new Bai11_1.Cat("Chuppy2");
+dog.bark();
+cat.meow();

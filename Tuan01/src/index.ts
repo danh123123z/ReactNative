@@ -6,6 +6,7 @@ import { BankAccount } from "./Bai05";
 import { Book } from "./Bai06";
 import { User } from "./Bai07";
 import { Product } from "./Bai08";
+import { Cat, Dog } from "./Bai11";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -50,3 +51,9 @@ filterProducts.forEach(product => {
 })
 
 // 9. Define an interface Animal with name and method sound().
+
+// 11. Create a base class Animal. Extend Dog and Cat classes with methods bark() and meow().
+const dog = new Dog("Chuppy1");
+const cat = new Cat("Chuppy2");
+dog.bark();
+cat.meow();
