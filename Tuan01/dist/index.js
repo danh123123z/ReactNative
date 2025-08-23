@@ -10,6 +10,7 @@ const Bai07_1 = require("./Bai07");
 const Bai08_1 = require("./Bai08");
 const Bai11_1 = require("./Bai11");
 const Bai12_1 = require("./Bai12");
+const Bai13_1 = require("./Bai13");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -53,3 +54,8 @@ const bird = new Bai12_1.Bird();
 const fish = new Bai12_1.Fish();
 fish.swim();
 bird.fly();
+// 13. Create an abstract class Shape with method area(). Implement Square and Circle.
+const square = new Bai13_1.Square(5);
+const circle = new Bai13_1.Circle(3);
+console.log(circle.area());
+console.log(square.area());
