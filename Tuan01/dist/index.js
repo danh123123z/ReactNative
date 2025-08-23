@@ -67,3 +67,4 @@ manager.manageTeam();
 const developer = new Bai14_1.Developer("Khanh", 2000);
 developer.work();
 developer.writeCode();
+// 15. Create a Library class that can store Book and User objects. Add method to add books.
