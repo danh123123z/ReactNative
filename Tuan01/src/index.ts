@@ -48,3 +48,5 @@ const filterProducts = products.filter(item => item.price > 100);
 filterProducts.forEach(product => {
     product.display()
 })
+
+// 9. Define an interface Animal with name and method sound().
