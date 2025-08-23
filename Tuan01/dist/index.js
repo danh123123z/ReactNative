@@ -9,6 +9,7 @@ const Bai06_1 = require("./Bai06");
 const Bai07_1 = require("./Bai07");
 const Bai08_1 = require("./Bai08");
 const Bai11_1 = require("./Bai11");
+const Bai12_1 = require("./Bai12");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -47,3 +48,8 @@ const dog = new Bai11_1.Dog("Chuppy1");
 const cat = new Bai11_1.Cat("Chuppy2");
 dog.bark();
 cat.meow();
+// 12. Define interfaces Flyable and Swimmable. Implement them in Bird and Fish classes.
+const bird = new Bai12_1.Bird();
+const fish = new Bai12_1.Fish();
+fish.swim();
+bird.fly();

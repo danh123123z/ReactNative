@@ -7,6 +7,7 @@ import { Book } from "./Bai06";
 import { User } from "./Bai07";
 import { Product } from "./Bai08";
 import { Cat, Dog } from "./Bai11";
+import { Bird, Fish } from "./Bai12";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -57,3 +58,9 @@ const dog = new Dog("Chuppy1");
 const cat = new Cat("Chuppy2");
 dog.bark();
 cat.meow();
+
+// 12. Define interfaces Flyable and Swimmable. Implement them in Bird and Fish classes.
+const bird = new Bird();
+const fish = new Fish();
+fish.swim(); 
+bird.fly(); 
