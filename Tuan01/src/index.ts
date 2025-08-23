@@ -2,6 +2,7 @@ import { Person } from "./Bai01";
 import { Student } from "./Bai02";
 import { Car } from "./Bai03";
 import { Rectangle } from "./Bai04";
+import { BankAccount } from "./Bai05";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -20,3 +21,8 @@ car.showInfo()
 // 4. Create a class Rectangle with width and height. Write a method to calculate area and perimeter.
 const rectangle = new Rectangle(10, 20);
 console.log(`Area: ${rectangle.calculateArea()}, Perimeter: ${rectangle.calculatePerimeter()}`)
+
+// 5. Create a class BankAccount with balance. Add methods deposit() and withdraw().
+const bank = new BankAccount(100000);
+bank.deposit(50000)
+bank.withdraw(20000)
