@@ -11,6 +11,7 @@ const Bai08_1 = require("./Bai08");
 const Bai11_1 = require("./Bai11");
 const Bai12_1 = require("./Bai12");
 const Bai13_1 = require("./Bai13");
+const Bai14_1 = require("./Bai14");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -59,3 +60,10 @@ const square = new Bai13_1.Square(5);
 const circle = new Bai13_1.Circle(3);
 console.log(circle.area());
 console.log(square.area());
+// 14. Create a base class Employee. Extend Manager and Developer with specific methods.
+const manager = new Bai14_1.Manager("Phuc", 1000);
+manager.work();
+manager.manageTeam();
+const developer = new Bai14_1.Developer("Khanh", 2000);
+developer.work();
+developer.writeCode();

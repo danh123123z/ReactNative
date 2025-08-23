@@ -9,6 +9,7 @@ import { Product } from "./Bai08";
 import { Cat, Dog } from "./Bai11";
 import { Bird, Fish } from "./Bai12";
 import { Circle, Square } from "./Bai13";
+import { Developer, Manager } from "./Bai14";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -72,3 +73,11 @@ const square = new Square(5);
 const circle = new Circle(3);
 console.log(circle.area());
 console.log(square.area());
+
+// 14. Create a base class Employee. Extend Manager and Developer with specific methods.
+const manager = new Manager("Phuc", 1000);
+manager.work();
+manager.manageTeam();
+const developer = new Developer("Khanh", 2000);
+developer.work();
+developer.writeCode();
