@@ -12,6 +12,7 @@ const Bai11_1 = require("./Bai11");
 const Bai12_1 = require("./Bai12");
 const Bai13_1 = require("./Bai13");
 const Bai14_1 = require("./Bai14");
+const Bai16_1 = require("./Bai16");
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Bai01_1.Person("Dao Duc Danh", 18);
 person.display();
@@ -68,3 +69,11 @@ const developer = new Bai14_1.Developer("Khanh", 2000);
 developer.work();
 developer.writeCode();
 // 15. Create a Library class that can store Book and User objects. Add method to add books.
+// 16. Create a generic class Box that can store any type of value.
+// Example usage
+const numberBox = new Bai16_1.Box(123);
+console.log("Number:", numberBox.getValue());
+const stringBox = new Bai16_1.Box("Hello");
+console.log("String:", stringBox.getValue());
+const booleanBox = new Bai16_1.Box(true);
+console.log("Boolean:", booleanBox.getValue());

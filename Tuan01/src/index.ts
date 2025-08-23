@@ -10,6 +10,7 @@ import { Cat, Dog } from "./Bai11";
 import { Bird, Fish } from "./Bai12";
 import { Circle, Square } from "./Bai13";
 import { Developer, Manager } from "./Bai14";
+import { Box } from "./Bai16";
 
 // 1. Create a class Person with attributes name and age. Write a method to display this information.
 const person = new Person("Dao Duc Danh", 18);
@@ -83,3 +84,13 @@ developer.work();
 developer.writeCode();
 
 // 15. Create a Library class that can store Book and User objects. Add method to add books.
+
+// 16. Create a generic class Box that can store any type of value.
+
+// Example usage
+const numberBox = new Box<number>(123);
+console.log("Number:", numberBox.getValue());
+const stringBox = new Box<string>("Hello");
+console.log("String:", stringBox.getValue());
+const booleanBox = new Box<boolean>(true);
+console.log("Boolean:", booleanBox.getValue()); 
