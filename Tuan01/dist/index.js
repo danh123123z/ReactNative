@@ -83,3 +83,4 @@ console.log(Bai18_1.MathUtil.add(10, 5));
 console.log(Bai18_1.MathUtil.subtract(10, 5));
 console.log(Bai18_1.MathUtil.multiply(10, 5));
 console.log(Bai18_1.MathUtil.divide(10, 5));
+// 19. Demonstrate method overriding using polymorphism with Animal and subclasses.// Lớp cha

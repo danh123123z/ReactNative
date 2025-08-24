@@ -100,4 +100,6 @@ console.log("Boolean:", booleanBox.getValue());
 console.log(MathUtil.add(10, 5));
 console.log(MathUtil.subtract(10, 5));
 console.log(MathUtil.multiply(10, 5));
-console.log(MathUtil.divide(10, 5)); 
+console.log(MathUtil.divide(10, 5));
+
+// 19. Demonstrate method overriding using polymorphism with Animal and subclasses.// Lớp cha
