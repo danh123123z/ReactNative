@@ -19,9 +19,21 @@ export async function openDB() {
         title TEXT NOT NULL,
         amount REAL NOT NULL,
         type TEXT NOT NULL,
-        createdAt TEXT NOT NULL
+        createdAt TEXT NOT NULL,
+        deleted INTEGER DEFAULT 0
       );
     `);
+
+    // ✅ Migration: Thêm cột deleted nếu chưa có
+    try {
+      await database.execAsync(`
+        ALTER TABLE expenses ADD COLUMN deleted INTEGER DEFAULT 0;
+      `);
+      console.log("✅ Added 'deleted' column");
+    } catch (error) {
+      // Cột đã tồn tại, bỏ qua lỗi
+      console.log("ℹ️ Column 'deleted' already exists");
+    }
 
     // 🌱 Seed dữ liệu mẫu nếu chưa có dữ liệu
     const count = await database.getFirstAsync<{ count: number }>(
@@ -64,7 +76,12 @@ export async function addExpense(title: string, amount: number, type: "Thu" | "C
 
 export async function getExpenses() {
   const db = await openDB();
-  return db.getAllAsync("SELECT * FROM expenses ORDER BY id DESC");
+  return db.getAllAsync("SELECT * FROM expenses WHERE deleted = 0 ORDER BY id DESC");
+}
+
+export async function getDeletedExpenses() {
+  const db = await openDB();
+  return db.getAllAsync("SELECT * FROM expenses WHERE deleted = 1 ORDER BY id DESC");
 }
 
 export async function updateExpense(id: number, title: string, amount: number, type: "Thu" | "Chi") {
@@ -77,5 +94,18 @@ export async function updateExpense(id: number, title: string, amount: number, t
 
 export async function deleteExpense(id: number) {
   const db = await openDB();
+  // Soft delete - chuyển vào trash
+  await db.runAsync("UPDATE expenses SET deleted = 1 WHERE id = ?", [id]);
+}
+
+export async function permanentDeleteExpense(id: number) {
+  const db = await openDB();
+  // Hard delete - xóa vĩnh viễn
   await db.runAsync("DELETE FROM expenses WHERE id = ?", [id]);
+}
+
+export async function restoreExpense(id: number) {
+  const db = await openDB();
+  // Khôi phục từ trash
+  await db.runAsync("UPDATE expenses SET deleted = 0 WHERE id = ?", [id]);
 }

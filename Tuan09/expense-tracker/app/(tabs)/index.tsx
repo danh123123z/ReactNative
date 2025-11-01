@@ -17,12 +17,13 @@ export default function HomeScreen() {
   const [expenses, setExpenses] = useState<any[]>([]);
   const router = useRouter();
 
+  const loadData = async () => {
+    const data = await getExpenses();
+    setExpenses(data);
+  };
+
   useFocusEffect(
     useCallback(() => {
-      const loadData = async () => {
-        const data = await getExpenses();
-        setExpenses(data);
-      };
       loadData();
     }, [])
   );
@@ -57,7 +58,9 @@ export default function HomeScreen() {
         {/* Danh sách khoản Thu/Chi */}
         <FlatList
           data={expenses}
-          renderItem={({ item }) => <ExpenseItem {...item} />}
+          renderItem={({ item }) => (
+            <ExpenseItem {...item} onDelete={loadData} />
+          )}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingVertical: 10 }}
           showsVerticalScrollIndicator={false}

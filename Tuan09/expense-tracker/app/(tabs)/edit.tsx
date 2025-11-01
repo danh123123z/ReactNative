@@ -59,28 +59,32 @@ export default function EditExpenseScreen() {
   };
 
   const handleDelete = () => {
-    Alert.alert("🗑️ Xác nhận xóa", "Bạn có chắc muốn xóa khoản này?", [
-      {
-        text: "Hủy",
-        style: "cancel",
-      },
-      {
-        text: "Xóa",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await deleteExpense(id);
-            navigation.navigate("index" as never);
-            setTimeout(() => {
-              Alert.alert("✅ Đã xóa", "Khoản đã được xóa khỏi SQLite!");
-            }, 300);
-          } catch (error) {
-            console.error("❌ Lỗi khi xóa:", error);
-            Alert.alert("❌ Thất bại", "Không thể xóa dữ liệu.");
-          }
+    Alert.alert(
+      "🗑️ Chuyển vào thùng rác?",
+      "Khoản này sẽ được chuyển vào thùng rác. Bạn có thể khôi phục sau.",
+      [
+        {
+          text: "Hủy",
+          style: "cancel",
         },
-      },
-    ]);
+        {
+          text: "Xóa",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteExpense(id);
+              navigation.navigate("index" as never);
+              setTimeout(() => {
+                Alert.alert("✅ Đã xóa", "Khoản đã được chuyển vào thùng rác!");
+              }, 300);
+            } catch (error) {
+              console.error("❌ Lỗi khi xóa:", error);
+              Alert.alert("❌ Thất bại", "Không thể xóa dữ liệu.");
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (

@@ -1,6 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from "react-native";
 import { useRouter } from "expo-router";
+import { deleteExpense } from "@/app/db";
 
 type ExpenseItemProps = {
   id: number;
@@ -8,6 +16,7 @@ type ExpenseItemProps = {
   amount: number;
   createdAt: string;
   type: "Thu" | "Chi";
+  onDelete?: () => void;
 };
 
 export default function ExpenseItem({
@@ -16,6 +25,7 @@ export default function ExpenseItem({
   amount,
   createdAt,
   type,
+  onDelete,
 }: ExpenseItemProps) {
   const isIncome = type === "Thu";
   const router = useRouter();
@@ -27,10 +37,57 @@ export default function ExpenseItem({
     });
   };
 
+  const handleLongPress = async () => {
+    if (Platform.OS === "web") {
+      // Dùng window.confirm cho web
+      const confirmDelete = window.confirm(
+        `🗑️ Xóa khoản này?\n\nBạn có muốn xóa "${title}"?\nKhoản này sẽ được chuyển vào thùng rác.`
+      );
+
+      if (confirmDelete) {
+        try {
+          await deleteExpense(id);
+          window.alert("✅ Đã xóa!\nKhoản đã được chuyển vào thùng rác!");
+          onDelete?.(); // Callback để refresh danh sách
+        } catch (error) {
+          console.error("❌ Lỗi khi xóa:", error);
+          window.alert("❌ Thất bại!\nKhông thể xóa khoản này.");
+        }
+      }
+    } else {
+      // Dùng Alert cho mobile
+      Alert.alert(
+        "🗑️ Xóa khoản này?",
+        `Bạn có muốn xóa "${title}"?\nKhoản này sẽ được chuyển vào thùng rác.`,
+        [
+          {
+            text: "Hủy",
+            style: "cancel",
+          },
+          {
+            text: "Xóa",
+            style: "destructive",
+            onPress: async () => {
+              try {
+                await deleteExpense(id);
+                Alert.alert("✅ Đã xóa", "Khoản đã được chuyển vào thùng rác!");
+                onDelete?.(); // Callback để refresh danh sách
+              } catch (error) {
+                console.error("❌ Lỗi khi xóa:", error);
+                Alert.alert("❌ Thất bại", "Không thể xóa khoản này.");
+              }
+            },
+          },
+        ]
+      );
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[styles.card, isIncome ? styles.income : styles.expense]}
       onPress={handlePress}
+      onLongPress={handleLongPress}
       activeOpacity={0.7}
     >
       <View style={styles.row}>
