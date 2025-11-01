@@ -1,0 +1,63 @@
+==============================================
+     ĐỒ ÁN QUẢN LÝ THU CHI - EAS BUILD LINK
+==============================================
+
+Họ tên sinh viên: [Điền tên của bạn]
+MSSV: [Điền MSSV của bạn]
+Lớp: [Điền lớp của bạn]
+
+==============================================
+         LINK BUILD EAS PREVIEW
+==============================================
+
+Platform: Android (APK)
+Profile: preview
+
+Link tải APK:
+[Paste link build EAS vào đây sau khi build xong]
+
+Ví dụ link:
+https://expo.dev/accounts/your-username/projects/expense-tracker/builds/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+Hoặc link trực tiếp download APK:
+https://expo.dev/artifacts/eas/[artifact-id].apk
+
+==============================================
+         HƯỚNG DẪN CÀI ĐẶT APK
+==============================================
+
+1. Tải file APK từ link trên
+2. Mở file APK trên điện thoại Android
+3. Cho phép cài đặt từ nguồn không xác định (nếu được hỏi)
+4. Cài đặt và mở ứng dụng
+
+==============================================
+           TÍNH NĂNG ĐÃ HOÀN THÀNH
+==============================================
+
+✅ Câu 3: Thêm khoản thu chi
+✅ Câu 4: Sửa/xóa khoản thu chi
+✅ Câu 5: Thùng rác (soft delete)
+✅ Câu 6: Tìm kiếm
+✅ Câu 7: Pull to refresh
+✅ Câu 9: Đồng bộ với MockAPI
+✅ Câu 10: Filter Thu/Chi
+✅ Câu 11: Biểu đồ thống kê
+✅ Câu 12: EAS Build Preview
+
+==============================================
+              CÔNG NGHỆ SỬ DỤNG
+==============================================
+
+- React Native (Expo Router)
+- TypeScript
+- SQLite (expo-sqlite)
+- AsyncStorage
+- React Native Chart Kit
+- MockAPI.io
+- EAS Build
+
+==============================================
+
+Ngày build: [Tự động cập nhật sau khi build]
+Build version: 1.0.0

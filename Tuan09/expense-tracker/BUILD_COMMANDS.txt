@@ -1,0 +1,22 @@
+# Commands để build EAS Preview
+
+# Bước 1: Cài đặt EAS CLI
+npm install -g eas-cli
+
+# Bước 2: Đăng nhập
+eas login
+
+# Bước 3: Cấu hình (nếu chưa)
+cd D:\ReactNative\Tuan09\expense-tracker
+eas build:configure
+
+# Bước 4: Build Preview cho Android
+eas build --platform android --profile preview
+
+# Bước 5: Xem danh sách builds
+eas build:list
+
+# Bước 6: Xem chi tiết build
+eas build:view [BUILD_ID]
+
+# Link để xem builds: https://expo.dev
