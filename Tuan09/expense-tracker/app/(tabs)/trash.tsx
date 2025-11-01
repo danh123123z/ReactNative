@@ -8,6 +8,8 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  TextInput,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
@@ -16,6 +18,7 @@ import {
   restoreExpense,
   permanentDeleteExpense,
 } from "@/app/db";
+import { Ionicons } from "@expo/vector-icons";
 
 type TrashItemProps = {
   id: number;
@@ -39,46 +42,82 @@ function TrashItem({
   const isIncome = type === "Thu";
 
   const handleRestore = () => {
-    Alert.alert("♻️ Khôi phục?", `Bạn có muốn khôi phục "${title}"?`, [
-      { text: "Hủy", style: "cancel" },
-      {
-        text: "Khôi phục",
-        onPress: async () => {
+    if (Platform.OS === "web") {
+      const confirmRestore = window.confirm(
+        `♻️ Khôi phục?\n\nBạn có muốn khôi phục "${title}"?`
+      );
+      if (confirmRestore) {
+        (async () => {
           try {
             await restoreExpense(id);
-            Alert.alert("✅ Đã khôi phục", "Khoản đã được khôi phục!");
+            window.alert("✅ Đã khôi phục!\nKhoản đã được khôi phục!");
             onRestore();
           } catch (error) {
             console.error("❌ Lỗi khi khôi phục:", error);
-            Alert.alert("❌ Thất bại", "Không thể khôi phục.");
+            window.alert("❌ Thất bại!\nKhông thể khôi phục.");
           }
-        },
-      },
-    ]);
-  };
-
-  const handlePermanentDelete = () => {
-    Alert.alert(
-      "⚠️ Xóa vĩnh viễn?",
-      `Bạn có chắc muốn xóa vĩnh viễn "${title}"?\nHành động này không thể hoàn tác!`,
-      [
+        })();
+      }
+    } else {
+      Alert.alert("♻️ Khôi phục?", `Bạn có muốn khôi phục "${title}"?`, [
         { text: "Hủy", style: "cancel" },
         {
-          text: "Xóa vĩnh viễn",
-          style: "destructive",
+          text: "Khôi phục",
           onPress: async () => {
             try {
-              await permanentDeleteExpense(id);
-              Alert.alert("✅ Đã xóa", "Khoản đã được xóa vĩnh viễn!");
-              onPermanentDelete();
+              await restoreExpense(id);
+              Alert.alert("✅ Đã khôi phục", "Khoản đã được khôi phục!");
+              onRestore();
             } catch (error) {
-              console.error("❌ Lỗi khi xóa:", error);
-              Alert.alert("❌ Thất bại", "Không thể xóa.");
+              console.error("❌ Lỗi khi khôi phục:", error);
+              Alert.alert("❌ Thất bại", "Không thể khôi phục.");
             }
           },
         },
-      ]
-    );
+      ]);
+    }
+  };
+
+  const handlePermanentDelete = () => {
+    if (Platform.OS === "web") {
+      const confirmDelete = window.confirm(
+        `⚠️ Xóa vĩnh viễn?\n\nBạn có chắc muốn xóa vĩnh viễn "${title}"?\nHành động này không thể hoàn tác!`
+      );
+      if (confirmDelete) {
+        (async () => {
+          try {
+            await permanentDeleteExpense(id);
+            window.alert("✅ Đã xóa!\nKhoản đã được xóa vĩnh viễn!");
+            onPermanentDelete();
+          } catch (error) {
+            console.error("❌ Lỗi khi xóa:", error);
+            window.alert("❌ Thất bại!\nKhông thể xóa.");
+          }
+        })();
+      }
+    } else {
+      Alert.alert(
+        "⚠️ Xóa vĩnh viễn?",
+        `Bạn có chắc muốn xóa vĩnh viễn "${title}"?\nHành động này không thể hoàn tác!`,
+        [
+          { text: "Hủy", style: "cancel" },
+          {
+            text: "Xóa vĩnh viễn",
+            style: "destructive",
+            onPress: async () => {
+              try {
+                await permanentDeleteExpense(id);
+                Alert.alert("✅ Đã xóa", "Khoản đã được xóa vĩnh viễn!");
+                onPermanentDelete();
+              } catch (error) {
+                console.error("❌ Lỗi khi xóa:", error);
+                Alert.alert("❌ Thất bại", "Không thể xóa.");
+              }
+            },
+          },
+        ]
+      );
+    }
   };
 
   return (
@@ -123,10 +162,25 @@ function TrashItem({
 
 export default function TrashScreen() {
   const [deletedExpenses, setDeletedExpenses] = useState<any[]>([]);
+  const [filteredExpenses, setFilteredExpenses] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const loadData = async () => {
     const data = await getDeletedExpenses();
     setDeletedExpenses(data);
+    setFilteredExpenses(data);
+  };
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    if (text.trim() === "") {
+      setFilteredExpenses(deletedExpenses);
+    } else {
+      const filtered = deletedExpenses.filter((expense) =>
+        expense.title.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredExpenses(filtered);
+    }
   };
 
   useFocusEffect(
@@ -159,6 +213,28 @@ export default function TrashScreen() {
           </View>
         ) : (
           <>
+            {/* Search Bar */}
+            <View style={styles.searchContainer}>
+              <Ionicons
+                name="search"
+                size={20}
+                color="#777"
+                style={styles.searchIcon}
+              />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Tìm kiếm trong thùng rác..."
+                placeholderTextColor="#999"
+                value={searchQuery}
+                onChangeText={handleSearch}
+              />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={() => handleSearch("")}>
+                  <Ionicons name="close-circle" size={20} color="#777" />
+                </TouchableOpacity>
+              )}
+            </View>
+
             <View style={styles.infoCard}>
               <Text style={styles.infoText}>
                 💡 Các khoản đã xóa sẽ được lưu tại đây.{"\n"}
@@ -166,7 +242,7 @@ export default function TrashScreen() {
               </Text>
             </View>
             <FlatList
-              data={deletedExpenses}
+              data={filteredExpenses}
               renderItem={({ item }) => (
                 <TrashItem
                   {...item}
@@ -177,6 +253,15 @@ export default function TrashScreen() {
               keyExtractor={(item) => item.id.toString()}
               contentContainerStyle={{ paddingVertical: 10 }}
               showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                <View style={styles.emptySearch}>
+                  <Text style={styles.emptySearchText}>🔍</Text>
+                  <Text style={styles.emptySearchTitle}>Không tìm thấy</Text>
+                  <Text style={styles.emptySearchSubtitle}>
+                    Không có khoản nào khớp với "{searchQuery}"
+                  </Text>
+                </View>
+              }
             />
           </>
         )}
@@ -204,6 +289,48 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+    outlineStyle: "none",
+  },
+  emptySearch: {
+    alignItems: "center",
+    marginTop: 40,
+  },
+  emptySearchText: {
+    fontSize: 60,
+    marginBottom: 12,
+  },
+  emptySearchTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 4,
+  },
+  emptySearchSubtitle: {
+    fontSize: 14,
+    color: "#777",
+    textAlign: "center",
   },
   infoCard: {
     backgroundColor: "#FFF3E0",

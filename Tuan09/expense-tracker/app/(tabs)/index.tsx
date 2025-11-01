@@ -7,19 +7,36 @@ import {
   StatusBar,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ExpenseItem from "@/components/ExpenseItem";
 import { useRouter, useFocusEffect } from "expo-router";
 import { getExpenses } from "@/app/db";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const [expenses, setExpenses] = useState<any[]>([]);
+  const [filteredExpenses, setFilteredExpenses] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
   const loadData = async () => {
     const data = await getExpenses();
     setExpenses(data);
+    setFilteredExpenses(data);
+  };
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    if (text.trim() === "") {
+      setFilteredExpenses(expenses);
+    } else {
+      const filtered = expenses.filter((expense) =>
+        expense.title.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredExpenses(filtered);
+    }
   };
 
   useFocusEffect(
@@ -44,6 +61,28 @@ export default function HomeScreen() {
 
       {/* Nội dung */}
       <View style={styles.content}>
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={20}
+            color="#777"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Tìm kiếm theo tên khoản..."
+            placeholderTextColor="#999"
+            value={searchQuery}
+            onChangeText={handleSearch}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => handleSearch("")}>
+              <Ionicons name="close-circle" size={20} color="#777" />
+            </TouchableOpacity>
+          )}
+        </View>
+
         <View style={styles.card}>
           <Text style={styles.heading}>Xin chào 👋</Text>
           <Text style={styles.text}>
@@ -57,13 +96,22 @@ export default function HomeScreen() {
 
         {/* Danh sách khoản Thu/Chi */}
         <FlatList
-          data={expenses}
+          data={filteredExpenses}
           renderItem={({ item }) => (
             <ExpenseItem {...item} onDelete={loadData} />
           )}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingVertical: 10 }}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View style={styles.emptySearch}>
+              <Text style={styles.emptySearchText}>🔍</Text>
+              <Text style={styles.emptySearchTitle}>Không tìm thấy</Text>
+              <Text style={styles.emptySearchSubtitle}>
+                Không có khoản nào khớp với "{searchQuery}"
+              </Text>
+            </View>
+          }
         />
       </View>
 
@@ -96,6 +144,48 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+    outlineStyle: "none",
+  },
+  emptySearch: {
+    alignItems: "center",
+    marginTop: 40,
+  },
+  emptySearchText: {
+    fontSize: 60,
+    marginBottom: 12,
+  },
+  emptySearchTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 4,
+  },
+  emptySearchSubtitle: {
+    fontSize: 14,
+    color: "#777",
+    textAlign: "center",
   },
   card: {
     backgroundColor: "#fff",
