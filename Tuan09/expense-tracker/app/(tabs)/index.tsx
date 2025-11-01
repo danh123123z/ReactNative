@@ -1,9 +1,15 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet, StatusBar, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import ExpenseItem from "@/components/ExpenseItem";
 
 export default function HomeScreen() {
+  const mockData: { title: string; amount: number; createdAt: string; type: "Thu" | "Chi" }[] = [
+  { title: "Mua cà phê", amount: 45000, createdAt: "01/11/2025", type: "Chi" },
+  { title: "Lương tháng 10", amount: 15000000, createdAt: "01/11/2025", type: "Thu" },
+  { title: "Ăn trưa", amount: 60000, createdAt: "31/10/2025", type: "Chi" },
+];
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#007AFF" />
@@ -18,7 +24,7 @@ export default function HomeScreen() {
         <Text style={styles.title}>💸 EXPENSE TRACKER</Text>
       </LinearGradient>
 
-      {/* Content */}
+      {/* Nội dung */}
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.heading}>Xin chào 👋</Text>
@@ -30,16 +36,22 @@ export default function HomeScreen() {
             với MockAPI.
           </Text>
         </View>
+
+        {/* Danh sách khoản Thu/Chi */}
+        <FlatList
+          data={mockData}
+          renderItem={({ item }) => <ExpenseItem {...item} />}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={{ paddingVertical: 10 }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f3f6fa",
-  },
+  container: { flex: 1, backgroundColor: "#f3f6fa" },
   header: {
     paddingVertical: 24,
     justifyContent: "center",
@@ -56,12 +68,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: 20,
   },
   card: {
-    width: "95%",
     backgroundColor: "#fff",
     borderRadius: 16,
     padding: 20,
@@ -70,6 +79,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 5,
+    marginBottom: 20,
   },
   heading: {
     fontSize: 22,
