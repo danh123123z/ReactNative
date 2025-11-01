@@ -16,17 +16,20 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { getExpenses } from "@/app/db";
 import { Ionicons } from "@expo/vector-icons";
 
+type FilterType = "Tất cả" | "Thu" | "Chi";
+
 export default function HomeScreen() {
   const [expenses, setExpenses] = useState<any[]>([]);
   const [filteredExpenses, setFilteredExpenses] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>("Tất cả");
   const router = useRouter();
 
   const loadData = async () => {
     const data = await getExpenses();
     setExpenses(data);
-    setFilteredExpenses(data);
+    applyFilters(data, searchQuery, selectedFilter);
   };
 
   const onRefresh = useCallback(async () => {
@@ -35,16 +38,32 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, []);
 
+  const applyFilters = (data: any[], search: string, filter: FilterType) => {
+    let result = [...data];
+
+    // Apply type filter
+    if (filter !== "Tất cả") {
+      result = result.filter((expense) => expense.type === filter);
+    }
+
+    // Apply search filter
+    if (search.trim() !== "") {
+      result = result.filter((expense) =>
+        expense.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    setFilteredExpenses(result);
+  };
+
   const handleSearch = (text: string) => {
     setSearchQuery(text);
-    if (text.trim() === "") {
-      setFilteredExpenses(expenses);
-    } else {
-      const filtered = expenses.filter((expense) =>
-        expense.title.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredExpenses(filtered);
-    }
+    applyFilters(expenses, text, selectedFilter);
+  };
+
+  const handleFilterChange = (filter: FilterType) => {
+    setSelectedFilter(filter);
+    applyFilters(expenses, searchQuery, filter);
   };
 
   useFocusEffect(
@@ -89,6 +108,58 @@ export default function HomeScreen() {
               <Ionicons name="close-circle" size={20} color="#777" />
             </TouchableOpacity>
           )}
+        </View>
+
+        {/* Filter Tabs */}
+        <View style={styles.filterContainer}>
+          <TouchableOpacity
+            style={[
+              styles.filterTab,
+              selectedFilter === "Tất cả" && styles.filterTabActive,
+            ]}
+            onPress={() => handleFilterChange("Tất cả")}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                selectedFilter === "Tất cả" && styles.filterTextActive,
+              ]}
+            >
+              📊 Tất cả
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.filterTab,
+              selectedFilter === "Thu" && styles.filterTabActive,
+            ]}
+            onPress={() => handleFilterChange("Thu")}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                selectedFilter === "Thu" && styles.filterTextActive,
+              ]}
+            >
+              💰 Thu
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.filterTab,
+              selectedFilter === "Chi" && styles.filterTabActive,
+            ]}
+            onPress={() => handleFilterChange("Chi")}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                selectedFilter === "Chi" && styles.filterTextActive,
+              ]}
+            >
+              💸 Chi
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.card}>
@@ -185,6 +256,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     outlineStyle: "none",
+  },
+  filterContainer: {
+    flexDirection: "row",
+    marginBottom: 16,
+    gap: 12,
+  },
+  filterTab: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  filterTabActive: {
+    backgroundColor: "#007AFF",
+    borderColor: "#007AFF",
+  },
+  filterText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#666",
+  },
+  filterTextActive: {
+    color: "#fff",
   },
   emptySearch: {
     alignItems: "center",
