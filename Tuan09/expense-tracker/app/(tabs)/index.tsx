@@ -1,15 +1,17 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, StatusBar, FlatList } from "react-native";
+import { View, Text, StyleSheet, StatusBar, FlatList, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ExpenseItem from "@/components/ExpenseItem";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const mockData: { title: string; amount: number; createdAt: string; type: "Thu" | "Chi" }[] = [
-  { title: "Mua cà phê", amount: 45000, createdAt: "01/11/2025", type: "Chi" },
-  { title: "Lương tháng 10", amount: 15000000, createdAt: "01/11/2025", type: "Thu" },
-  { title: "Ăn trưa", amount: 60000, createdAt: "31/10/2025", type: "Chi" },
-];
+    { title: "Mua cà phê", amount: 45000, createdAt: "01/11/2025", type: "Chi" },
+    { title: "Lương tháng 10", amount: 15000000, createdAt: "01/11/2025", type: "Thu" },
+    { title: "Ăn trưa", amount: 60000, createdAt: "31/10/2025", type: "Chi" },
+  ];
+  const router = useRouter();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#007AFF" />
@@ -46,6 +48,10 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
         />
       </View>
+
+      <TouchableOpacity style={styles.addButton} onPress={() => router.push("/add")}>
+        <Text style={styles.addText}>➕ Add</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -92,5 +98,17 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: "#444",
     marginBottom: 8,
+  },
+  addButton: {
+    backgroundColor: "#007AFF",
+    margin: 16,
+    padding: 14,
+    borderRadius: 14,
+    alignItems: "center",
+  },
+  addText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
