@@ -50,6 +50,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="sync"
+        options={{
+          title: "Đồng bộ",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="cloud-upload" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="explore"
         options={{
           title: "Khám phá",

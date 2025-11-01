@@ -79,6 +79,12 @@ export async function getExpenses() {
   return db.getAllAsync("SELECT * FROM expenses WHERE deleted = 0 ORDER BY id DESC");
 }
 
+// ✅ Lấy TẤT CẢ expenses (bao gồm cả deleted) để sync lên API
+export async function getAllExpensesForSync() {
+  const db = await openDB();
+  return db.getAllAsync("SELECT * FROM expenses ORDER BY id DESC");
+}
+
 export async function getDeletedExpenses() {
   const db = await openDB();
   return db.getAllAsync("SELECT * FROM expenses WHERE deleted = 1 ORDER BY id DESC");
