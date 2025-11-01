@@ -10,6 +10,7 @@ import {
   Alert,
   TextInput,
   Platform,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
@@ -164,12 +165,19 @@ export default function TrashScreen() {
   const [deletedExpenses, setDeletedExpenses] = useState<any[]>([]);
   const [filteredExpenses, setFilteredExpenses] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   const loadData = async () => {
     const data = await getDeletedExpenses();
     setDeletedExpenses(data);
     setFilteredExpenses(data);
   };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }, []);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -253,6 +261,16 @@ export default function TrashScreen() {
               keyExtractor={(item) => item.id.toString()}
               contentContainerStyle={{ paddingVertical: 10 }}
               showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={["#F44336"]}
+                  tintColor="#F44336"
+                  title="Đang tải..."
+                  titleColor="#F44336"
+                />
+              }
               ListEmptyComponent={
                 <View style={styles.emptySearch}>
                   <Text style={styles.emptySearchText}>🔍</Text>

@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ExpenseItem from "@/components/ExpenseItem";
@@ -19,6 +20,7 @@ export default function HomeScreen() {
   const [expenses, setExpenses] = useState<any[]>([]);
   const [filteredExpenses, setFilteredExpenses] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
 
   const loadData = async () => {
@@ -26,6 +28,12 @@ export default function HomeScreen() {
     setExpenses(data);
     setFilteredExpenses(data);
   };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }, []);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -103,6 +111,16 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingVertical: 10 }}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["#007AFF"]}
+              tintColor="#007AFF"
+              title="Đang tải..."
+              titleColor="#007AFF"
+            />
+          }
           ListEmptyComponent={
             <View style={styles.emptySearch}>
               <Text style={styles.emptySearchText}>🔍</Text>
