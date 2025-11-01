@@ -66,3 +66,16 @@ export async function getExpenses() {
   const db = await openDB();
   return db.getAllAsync("SELECT * FROM expenses ORDER BY id DESC");
 }
+
+export async function updateExpense(id: number, title: string, amount: number, type: "Thu" | "Chi") {
+  const db = await openDB();
+  await db.runAsync(
+    "UPDATE expenses SET title = ?, amount = ?, type = ? WHERE id = ?",
+    [title, amount, type, id]
+  );
+}
+
+export async function deleteExpense(id: number) {
+  const db = await openDB();
+  await db.runAsync("DELETE FROM expenses WHERE id = ?", [id]);
+}

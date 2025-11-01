@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 type ExpenseItemProps = {
+  id: number;
   title: string;
   amount: number;
   createdAt: string;
@@ -9,28 +11,52 @@ type ExpenseItemProps = {
 };
 
 export default function ExpenseItem({
+  id,
   title,
   amount,
   createdAt,
   type,
 }: ExpenseItemProps) {
   const isIncome = type === "Thu";
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/(tabs)/edit",
+      params: { id, title, amount, type, createdAt },
+    });
+  };
 
   return (
-    <View style={[styles.card, isIncome ? styles.income : styles.expense]}>
+    <TouchableOpacity
+      style={[styles.card, isIncome ? styles.income : styles.expense]}
+      onPress={handlePress}
+      activeOpacity={0.7}
+    >
       <View style={styles.row}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={[styles.amount, isIncome ? styles.incomeText : styles.expenseText]}>
-          {isIncome ? "+" : "-"}{amount.toLocaleString()} ₫
+        <Text
+          style={[
+            styles.amount,
+            isIncome ? styles.incomeText : styles.expenseText,
+          ]}
+        >
+          {isIncome ? "+" : "-"}
+          {amount.toLocaleString()} ₫
         </Text>
       </View>
       <View style={styles.rowBetween}>
         <Text style={styles.date}>{createdAt}</Text>
-        <Text style={[styles.type, isIncome ? styles.incomeText : styles.expenseText]}>
+        <Text
+          style={[
+            styles.type,
+            isIncome ? styles.incomeText : styles.expenseText,
+          ]}
+        >
           {type}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
