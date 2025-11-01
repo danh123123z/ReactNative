@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, StatusBar, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ExpenseItem from "@/components/ExpenseItem";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
+import { getExpenses } from "@/app/db";
 
 export default function HomeScreen() {
-  const mockData: { title: string; amount: number; createdAt: string; type: "Thu" | "Chi" }[] = [
-    { title: "Mua cà phê", amount: 45000, createdAt: "01/11/2025", type: "Chi" },
-    { title: "Lương tháng 10", amount: 15000000, createdAt: "01/11/2025", type: "Thu" },
-    { title: "Ăn trưa", amount: 60000, createdAt: "31/10/2025", type: "Chi" },
-  ];
+  const [expenses, setExpenses] = useState<any[]>([]);
   const router = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadData = async () => {
+        const data = await getExpenses();
+        setExpenses(data);
+      };
+      loadData();
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#007AFF" />
@@ -41,15 +56,18 @@ export default function HomeScreen() {
 
         {/* Danh sách khoản Thu/Chi */}
         <FlatList
-          data={mockData}
+          data={expenses}
           renderItem={({ item }) => <ExpenseItem {...item} />}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingVertical: 10 }}
           showsVerticalScrollIndicator={false}
         />
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={() => router.push("/add")}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => router.push("/add")}
+      >
         <Text style={styles.addText}>➕ Add</Text>
       </TouchableOpacity>
     </SafeAreaView>
